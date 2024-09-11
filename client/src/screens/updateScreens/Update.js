@@ -1,9 +1,10 @@
 import { Alert, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import ButtonNext from '../../components/ButtonNext';
-// import UpdateItem from '../../components/updateFlight/UpdateItem';
+import UpdateItem from '../../components/updateFlight/UpdateItem'
 import Button from '../../components/Button';
 import Loader from '../../components/Loader';
+import { deleteFlight, getFlight } from '../../api/api';
 
 const Update = ({route, navigation}) => {
     const [isActive, setIsActive] = useState(true);
@@ -13,8 +14,7 @@ const Update = ({route, navigation}) => {
 
     const getFlightById = async (id)=>  {
       try {
-        const response = await fetch(`http://192.168.1.82:8080/flight/${id}`);
-        const data = await response.json();
+        const data = await getFlight(id);
         setFlight(data)
         setLoading(false)
       } catch (error) {
@@ -26,7 +26,7 @@ const Update = ({route, navigation}) => {
       getFlightById(id)
     }, [id]);
 
-    const confirmDelete = async (id) => {
+    const confirmDelete = async () => {
       Alert.alert(
         'Confirm Deletion',
         'Are you sure you want to delete this Flight?', [
@@ -37,15 +37,15 @@ const Update = ({route, navigation}) => {
           },
           {
             text: 'Delete',
-            onPress: () => deleteFlight(id),
+            onPress: () => handleDelete(),
           },
         ],
         {cancelable: false}
       )
     }
-    const deleteFlight = async () => {
+    const handleDelete = async () => {
       try {
-        
+        deleteFlight(id)
         Alert.alert('Flight deleted', 'The flight has been deleted successfully.', [
           { text: 'Ok', onPress: () => navigation.navigate('Home')}
         ])
@@ -67,11 +67,14 @@ const Update = ({route, navigation}) => {
         <Text style={styles.title}>Edit your flight or delete it</Text>
       </View>
     <View style={styles.info_container}>
+      <UpdateItem title={'Origin'} itemInfo={flight.origin}/>
+      <UpdateItem title={'Destiny'} itemInfo={flight.destiny}/>
+      <UpdateItem title={'Date'} itemInfo={flight.date}/>
+      <UpdateItem title={'Passengers'} itemInfo={flight.passengers}/>
       {/* <UpdateItem title={'Origin'} itemInfo={flight.origin} onPress={() => navigation.navigate('OriginUpdate', {id: id})}/>
       <UpdateItem title={'Destiny'} itemInfo={flight.destiny} onPress={() => navigation.navigate('DestinyUpdate', {id: id})}/>
       <UpdateItem title={'Date'} itemInfo={flight.date} onPress={() => navigation.navigate('DatesUpdate', {id: id})}/>
       <UpdateItem title={'Passengers'} itemInfo={flight.passengers} onPress={() => navigation.navigate('PassengersUpdate', {id: id})}/> */}
-      <Text>Hola</Text>
     </View>
       <View style={styles.button_container}>
         <ButtonNext title={'Delete Flight'}  onPress={confirmDelete} isActive={isActive}/>
