@@ -3,32 +3,13 @@ import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Loader from '../components/Loader'
 import FlightCard from '../components/FlightCard';
-import { getFlights } from '../api/api';
+import { useFlights } from '../hooks/useFlights';
 
 
 export default function Flights({navigation}) {
   const [user, setUser] = useState([])
-  const [flights, setFlights] = useState([]);
-  const [loading, setLoading] = useState(true)
+  const {flights, loading} = useFlights(2)
 
-  useEffect(() => {
-    //if(user){
-      loadData();
-      setLoading(false)
-    //}
-  }, [flights])
-
-  async function loadData() {
-    try {
-      const data = await getFlights()
-      setFlights(data)
-      setLoading(false);
-      //console.log(data)
-    } catch (error) {
-      throw new Error(error)
-    }
-
-  }
 
   if (loading) {
     return (
@@ -62,7 +43,7 @@ export default function Flights({navigation}) {
     </View>
   );
 }
-//() => navigation.navigate('Update', {id: item.id})
+
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 15,

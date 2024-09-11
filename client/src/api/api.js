@@ -1,10 +1,10 @@
 import {BASE_URL} from '@env';   // 'http://10.0.2.2:' default way to connect to other device
 
-const API_FLIGHTS = `${BASE_URL}/flights/2`
+const API_FLIGHTS = `${BASE_URL}/flights`
 const API_FLIGHT = `${BASE_URL}/flight`
 
-export const getFlights = async () => {
-    const res = await fetch(API_FLIGHTS)
+export const getFlights = async (user_id) => {
+    const res = await fetch(`${API_FLIGHTS}/${user_id}`)
     return await res.json()
 }
 
