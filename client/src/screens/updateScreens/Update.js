@@ -4,27 +4,14 @@ import ButtonNext from '../../components/ButtonNext';
 import UpdateItem from '../../components/updateFlight/UpdateItem'
 import Button from '../../components/Button';
 import Loader from '../../components/Loader';
-import { deleteFlight, getFlight } from '../../api/api';
+import { deleteFlight } from '../../api/api';
+import {useFlight} from '../../hooks/useFlight'
 
 const Update = ({route, navigation}) => {
-    const [isActive, setIsActive] = useState(true);
-    const [loading, setLoading] = useState(true)
-    const [flight, setFlight] = useState(null);
     const {id} = route.params;
+    const [isActive, setIsActive] = useState(true);
+    const {flight, loading} = useFlight(id)
 
-    const getFlightById = async (id)=>  {
-      try {
-        const data = await getFlight(id);
-        setFlight(data)
-        setLoading(false)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
-    useEffect(()=> {
-      getFlightById(id)
-    }, [id]);
 
     const confirmDelete = async () => {
       Alert.alert(
@@ -67,14 +54,14 @@ const Update = ({route, navigation}) => {
         <Text style={styles.title}>Edit your flight or delete it</Text>
       </View>
     <View style={styles.info_container}>
-      <UpdateItem title={'Origin'} itemInfo={flight.origin}/>
+      {/* <UpdateItem title={'Origin'} itemInfo={flight.origin}/>
       <UpdateItem title={'Destiny'} itemInfo={flight.destiny}/>
       <UpdateItem title={'Date'} itemInfo={flight.date}/>
-      <UpdateItem title={'Passengers'} itemInfo={flight.passengers}/>
-      {/* <UpdateItem title={'Origin'} itemInfo={flight.origin} onPress={() => navigation.navigate('OriginUpdate', {id: id})}/>
+      <UpdateItem title={'Passengers'} itemInfo={flight.passengers}/> */}
+      <UpdateItem title={'Origin'} itemInfo={flight.origin} onPress={() => navigation.navigate('OriginUpdate', {id: id})}/>
       <UpdateItem title={'Destiny'} itemInfo={flight.destiny} onPress={() => navigation.navigate('DestinyUpdate', {id: id})}/>
       <UpdateItem title={'Date'} itemInfo={flight.date} onPress={() => navigation.navigate('DatesUpdate', {id: id})}/>
-      <UpdateItem title={'Passengers'} itemInfo={flight.passengers} onPress={() => navigation.navigate('PassengersUpdate', {id: id})}/> */}
+      <UpdateItem title={'Passengers'} itemInfo={flight.passengers} onPress={() => navigation.navigate('PassengersUpdate', {id: id})}/>
     </View>
       <View style={styles.button_container}>
         <ButtonNext title={'Delete Flight'}  onPress={confirmDelete} isActive={isActive}/>

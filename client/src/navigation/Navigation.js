@@ -8,10 +8,10 @@ import Dates from '../screens/bookingScreens/Dates'
 import Passengers from '../screens/bookingScreens/Passengers'
 import Confirm from '../screens/bookingScreens/Confirm'
 import Update from '../screens/updateScreens/Update'
-// import OriginUpdate from '../screens/updateScreens/OriginUpdate'
-// import DestinyUpdate from '../screens/updateScreens/DestinyUpdate'
-// import DatesUpdate from '../screens/updateScreens/DatesUpdate'
-// import PassengersUpdate from '../screens/updateScreens/PassengersUpdate'
+import OriginUpdate from '../screens/updateScreens/OriginUpdate'
+import DestinyUpdate from '../screens/updateScreens/DestinyUpdate'
+import DatesUpdate from '../screens/updateScreens/DatesUpdate'
+import PassengersUpdate from '../screens/updateScreens/PassengersUpdate'
 // import Login from '../screens/Login';
 // import CreateAccount from '../screens/createAccount/CreateAccount';
 
@@ -33,10 +33,10 @@ const Navigation = () => {
 
       <Stack.Screen name="Update" component={Update}/>
       
-      {/* <Stack.Screen name="OriginUpdate" component={OriginUpdate}/>
+      <Stack.Screen name="OriginUpdate" component={OriginUpdate}/>
       <Stack.Screen name="DestinyUpdate" component={DestinyUpdate}/>
       <Stack.Screen name="DatesUpdate" component={DatesUpdate}/>
-      <Stack.Screen name="PassengersUpdate" component={PassengersUpdate}/> */}
+      <Stack.Screen name="PassengersUpdate" component={PassengersUpdate}/>
     </Stack.Navigator>
   )
 }
