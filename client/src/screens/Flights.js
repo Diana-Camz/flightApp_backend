@@ -1,9 +1,9 @@
-import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Loader from '../components/Loader'
 import FlightCard from '../components/FlightCard';
+import { getFlights } from '../api/api';
 
 
 export default function Flights({navigation}) {
@@ -12,22 +12,20 @@ export default function Flights({navigation}) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if(user){
-      fetchData();
+    //if(user){
+      loadData();
       setLoading(false)
-    }
+    //}
+  }, [flights])
 
-  }, [user])
-
-  async function fetchData() {
+  async function loadData() {
     try {
-      const response = await fetch('http://192.168.1.82:8080/flights/2');
-      const data = await response.json();
+      const data = await getFlights()
       setFlights(data)
       setLoading(false);
       //console.log(data)
     } catch (error) {
-      console.log(error)
+      throw new Error(error)
     }
 
   }
@@ -64,7 +62,7 @@ export default function Flights({navigation}) {
     </View>
   );
 }
-
+//() => navigation.navigate('Update', {id: item.id})
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 15,

@@ -4,6 +4,7 @@ import ButtonNext from '../../components/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
 import Button from '../../components/Button';
 import Loader from '../../components/Loader';
+import { saveFlight } from '../../api/api';
 
 const Confirm = ({route, navigation}) => {
 
@@ -15,14 +16,17 @@ const Confirm = ({route, navigation}) => {
     destiny: destiny,
     date: day,
     passengers: passengers,
-    userId: userId,
+    user_id: 2,
     createdAt: new Date(),
   })
 
   const onSendData = async () => {
     setLoading(true)
     try {
-
+      saveFlight(newFlight);
+      Alert.alert('Saved flight', 'Your flight has been booked correctly', [
+       {text: 'Ok', onPress: () => navigation.navigate('Home')}
+      ])
     } catch (error) {
       console.log(error, 'error sending new flight')
     }
