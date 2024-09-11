@@ -26,7 +26,7 @@ const port = process.env.MYSQL_PORT;
 
 
 // CREATE
-app.post('/flights', async (req, res) => {
+app.post('/flights/:id', async (req, res) => {
     const {origin, destiny, date, passengers, user_id} = req.body;
     const flight = await createFlight(origin, destiny, date, passengers, user_id);
     res.status(200).send(flight);
