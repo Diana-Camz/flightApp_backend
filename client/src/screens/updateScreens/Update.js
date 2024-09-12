@@ -54,10 +54,6 @@ const Update = ({route, navigation}) => {
         <Text style={styles.title}>Edit your flight or delete it</Text>
       </View>
     <View style={styles.info_container}>
-      {/* <UpdateItem title={'Origin'} itemInfo={flight.origin}/>
-      <UpdateItem title={'Destiny'} itemInfo={flight.destiny}/>
-      <UpdateItem title={'Date'} itemInfo={flight.date}/>
-      <UpdateItem title={'Passengers'} itemInfo={flight.passengers}/> */}
       <UpdateItem title={'Origin'} itemInfo={flight.origin} onPress={() => navigation.navigate('OriginUpdate', {id: id})}/>
       <UpdateItem title={'Destiny'} itemInfo={flight.destiny} onPress={() => navigation.navigate('DestinyUpdate', {id: id})}/>
       <UpdateItem title={'Date'} itemInfo={flight.date} onPress={() => navigation.navigate('DatesUpdate', {id: id})}/>

@@ -8,7 +8,7 @@ import {format, parseISO} from 'date-fns'
 import Button from '../../components/Button';
 import Loader from '../../components/Loader';
 import {useFlight} from '../../hooks/useFlight'
-//import {  } from '../../api/api';
+import { updateFlight } from '../../api/api';
 
 const DatesUpdate = ({route, navigation}) => {
   const {id} = route.params;
@@ -32,8 +32,8 @@ const DatesUpdate = ({route, navigation}) => {
 
   const handleEditData = async (id) => {
     try {
-        const formattedDate = selectedDate ? formatDate(parseISO(selectedDate)) : '';
-
+        //const formattedDate = selectedDate ? formatDate(parseISO(selectedDate)) : '';
+        await updateFlight(id, {date: flight.date})
         Alert.alert('Flight updated', 'The flight has been updated successfully', [
             {text: 'Ok', onPress: () => navigation.navigate('Home')}
           ])

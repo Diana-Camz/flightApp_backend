@@ -6,7 +6,8 @@ import ButtonNext from '../../components/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
 import Button from '../../components/Button';
 import Loader from '../../components/Loader';
-import {useFlight} from '../../hooks/useFlight'
+import { useFlight } from '../../hooks/useFlight'
+import { updateFlight } from '../../api/api';
 
 const OriginUpdate = ({route, navigation}) => {
   const {id} = route.params;
@@ -15,8 +16,7 @@ const OriginUpdate = ({route, navigation}) => {
 
   const handleEditData = async (id) => {
     try {
-      const docRef = doc(database, 'flights', id)
-      await updateDoc(docRef, {origin: flight.origin})
+      await updateFlight(id, {origin: flight.origin})
       Alert.alert('Flight updated', 'The flight has been updated successfully', [
         {text: 'Ok', onPress: () => navigation.navigate('Home')}
       ])

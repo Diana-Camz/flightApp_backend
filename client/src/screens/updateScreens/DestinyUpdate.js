@@ -6,7 +6,8 @@ import ButtonNext from '../../components/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
 import Button from '../../components/Button';
 import Loader from '../../components/Loader';
-import {useFlight} from '../../hooks/useFlight'
+import { useFlight } from '../../hooks/useFlight'
+import { updateFlight } from '../../api/api';
 
 const DestinyUpdate = ({route, navigation}) => {
   const {id} = route.params;
@@ -14,8 +15,7 @@ const DestinyUpdate = ({route, navigation}) => {
 
   const handleEditData = async (id) => {
     try {
-      const docRef = doc(database, 'flights', id)
-      await updateDoc(docRef, {destiny: flight.destiny})
+      await updateFlight(id, {destiny: flight.destiny})
       Alert.alert('Flight updated', 'The flight has been updated successfully', [
         {text: 'Ok', onPress: () => navigation.navigate('Home')}
       ])
