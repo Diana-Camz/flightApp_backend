@@ -22,6 +22,15 @@ export const saveFlight = async (newFlight) => {
     return await res.json()
 }
 
+export const updateFlight = async (id, value) => {
+    const res = await fetch(`${API_FLIGHT}/${id}`, {
+        method: 'PUT',
+        headers: {Accept: 'application/json', 'Content-Type': 'application/json'},
+        body: JSON.stringify(value)
+    })
+    return res.json();
+}
+
 export const deleteFlight = async (id) => {
     await fetch(`${API_FLIGHT}/${id}`, {
         method: 'DELETE',

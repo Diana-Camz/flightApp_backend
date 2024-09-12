@@ -10,7 +10,7 @@ export const useFlight = (id) => {
                 const data = await getFlight(id)
                 setFlight(data)
             } catch (error) {
-                console.log(error)
+                console.log('Error fetching flight data', error)
             } finally {
                 setLoading(false)
             }
