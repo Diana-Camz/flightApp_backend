@@ -54,9 +54,11 @@ export async function getUserById(id) {
 }
 
 //UPDATE
-export async function updateFlight(id) {
-    const [result] = pool.query(`UPDATE flights WHERE id = ?;`, [id])
-    return result;
+export async function updateFlight(id, value) {
+     const field = Object.keys(value)[0];
+     const updateValue = Object.values(value)[0];
+     const [result] = await pool.query(`UPDATE flights SET ${field} = ? WHERE id = ?;`, [updateValue, id])
+     return result;
 }
 
 //DELETE

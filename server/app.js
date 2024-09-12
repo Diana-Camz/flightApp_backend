@@ -56,7 +56,7 @@ app.get('/user/:id', async (req, res) => {
 
 // UPDATE
 app.put('/flight/:id', async (req, res) => {
-    const {value} = req.body;
+    const value = req.body;
     const flight = updateFlight(req.params.id, value);
     res.status(200).send(flight);
 });
