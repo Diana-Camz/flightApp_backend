@@ -12,8 +12,8 @@ import OriginUpdate from '../screens/updateScreens/OriginUpdate'
 import DestinyUpdate from '../screens/updateScreens/DestinyUpdate'
 import DatesUpdate from '../screens/updateScreens/DatesUpdate'
 import PassengersUpdate from '../screens/updateScreens/PassengersUpdate'
-// import Login from '../screens/Login';
-// import CreateAccount from '../screens/createAccount/CreateAccount';
+import Login from '../screens/Login';
+import CreateAccount from '../screens/createAccount/CreateAccount';
 
 
 const Navigation = () => {
@@ -22,8 +22,8 @@ const Navigation = () => {
     <Stack.Navigator initialRouteName='Login' screenOptions={{headerShown:false}}>
       <Stack.Screen name="Home" component={Flights}/>
 
-      {/* <Stack.Screen name="Login" component={Login}/>
-      <Stack.Screen name="CreateAccount" component={CreateAccount}/> */}
+      <Stack.Screen name="Login" component={Login}/>
+      <Stack.Screen name="CreateAccount" component={CreateAccount}/>
 
       <Stack.Screen name="Origin" component={Origin}/>
       <Stack.Screen name="Destiny" component={Destiny}/>

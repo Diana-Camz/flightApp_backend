@@ -4,6 +4,7 @@ import ButtonNext from '../../components/ButtonNext';
 import CustomInput from '../../components/login/CustomInput';
 import Loader from '../../components/Loader';
 import Button from '../../components/Button';
+import {createUser} from '../../api/api'
 
 const CreateAccount = ({navigation}) => {
   const [loading, setLoading] = useState(false)
@@ -29,16 +30,18 @@ const CreateAccount = ({navigation}) => {
   const [newUser, setNewUser] = useState({
     name: '',
     lastname: '',
+    email: '',
+    password: '',
   })
 
-  const handleRegister = () => {
-      if(newUser.name && newUser.lastname && email && password && rePassword){
+  const handleValidation = () => {
+      if(newUser.name && newUser.lastname && newUser.email && newUser.password && rePassword){
         setValidEntries(false)
         setValidRePassword(false)
-        if(password.length >= 6) {
+        if(newUser.password.length >= 6) {
           setValidPassword(false)
-          if(password === rePassword){
-            createUser()
+          if(newUser.password === rePassword){
+            handleRegister()
           }else {
           setValidRePassword(true)
         }
@@ -50,25 +53,23 @@ const CreateAccount = ({navigation}) => {
         }
   }
 
-  const createUser = async () => {
+  const handleRegister = async () => {
     setLoading(true);
     try {
-      const response = await '';
-      const user = response.user;
-      onSend(user.uid)
+      createUser(newUser);
       Alert.alert('Account created', 'Please log in with your account', [
         {text: 'Ok', onPress: () => navigation.navigate('Login')}
         ])
     } catch(err) {
-        if(err.code === 'auth/email-already-in-use'){
-              setValidEmail(true)
-              setEmailMessage('Email already in use')
-            }
-            if(err.code === 'auth/invalid-email'){
-              setValidEmail(true)
-              setEmailMessage('Please enter a valid email')
-            }
-            console.log(err.code)
+        // if(err.code === 'auth/email-already-in-use'){
+        //      setValidEmail(true)
+        //       setEmailMessage('Email already in use')
+        //     }
+        //     if(err.code === 'auth/invalid-email'){
+        //       setValidEmail(true)
+        //       setEmailMessage('Please enter a valid email')
+        //}
+        console.log(err.code)
     } finally {
         setLoading(false)
     }
@@ -111,8 +112,8 @@ const CreateAccount = ({navigation}) => {
               onBlur={() => setIsFocusedLastName(false)}
             />
             <CustomInput
-              value={email}
-              onChangeText={(val) => setEmail(val)}
+              value={newUser.email}
+              onChangeText={(val) => setNewUser({ ...newUser, email: val })}
               placeholder="Email"
               isFocused={isFocusedEmail}
               onFocus={() => setIsFocusedEmail(true)}
@@ -123,8 +124,8 @@ const CreateAccount = ({navigation}) => {
               errorMessage={emailMessage}
             />
             <CustomInput
-              value={password}
-              onChangeText={setPassword}
+              value={newUser.password}
+              onChangeText={(val) => setNewUser({ ...newUser, password: val })}
               placeholder="Password"
               isFocused={isFocusedPass}
               onFocus={() => setIsFocusedPass(true)}
@@ -156,7 +157,7 @@ const CreateAccount = ({navigation}) => {
             />
             {validEntries ? <Text style={styles.errorEntriesTxt}>Please enter all fields</Text> : <Text style={styles.error_text}/>}
           </View>
-          <ButtonNext title={'Create Account'} onPress={handleRegister} isActive={true}/>
+          <ButtonNext title={'Create Account'} onPress={handleValidation} isActive={true}/>
           <Button title={'Cancel'} onPress={() => navigation.goBack()} />
         </ScrollView>
       </View>  
