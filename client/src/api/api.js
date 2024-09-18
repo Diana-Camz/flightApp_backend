@@ -15,10 +15,10 @@ export const getFlight = async (id) => {
     return await res.json()
 }
 
-export const getUserById = async (user_id) => {
-    const res = await fetch(`${API_USER}/${user_id}`)
-    return await res.json()
-}
+// export const getUserById = async (user_id) => {
+//     const res = await fetch(`${API_USER}/${user_id}`)
+//     return await res.json()
+// }
 
 // POST - CREATE
 export const saveFlight = async (newFlight) => {
@@ -30,13 +30,21 @@ export const saveFlight = async (newFlight) => {
     return await res.json()
 }
 
-export const createUser = async  (newUser) => {
-    const res = await fetch(API_USER, {
-        method: 'POST',
-        headers: {Accept: 'application/json', 'Content-Type': 'application/json'},
-        body: JSON.stringify(newUser)
-    });
-    return await res.json()
+export const createUser = async (newUser) => {
+    try {
+        const res = await fetch(API_USER, {
+            method: 'POST',
+            headers: {Accept: 'application/json', 'Content-Type': 'application/json'},
+            body: JSON.stringify(newUser) 
+        });
+        if (!res.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return await res.json()
+    } catch (error) {
+        console.error('Error creating user:', error);
+        throw error
+    }
 }
 
 // PUT - UPDATE

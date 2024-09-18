@@ -21,7 +21,7 @@ const app = express();
 app.use(express.json());
 app.use(cors(corsOptions))
 dotenv.config();
-const port = process.env.MYSQL_PORT;
+const port = process.env.PORT;
 
 
 
@@ -33,9 +33,13 @@ app.post('/flights/:id', async (req, res) => {
 });
 
 app.post('/user', async (req, res) => {
-    const {name, lastname, email, password} = req.body;
-    const user = await createUser(name, lastname, email, password);
-    res.status(200).send(user);
+    try {
+        const {name, lastname, email, password} = req.body;
+        const user = await createUser(name, lastname, email, password);
+        res.status(201).send(user);
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error' });
+    }
 })
 
 // READ
@@ -67,6 +71,6 @@ app.delete('/flight/:id', async (req, res) => {
     res.send({message: 'Flight deleted successfully'});
 })
 
-app.listen(port, () => {
-    console.log('server running on port 8080')
+app.listen(port || 3000, () => {
+    console.log(`server running on port ${port}`)
 });

@@ -19,11 +19,6 @@ const CreateAccount = ({navigation}) => {
   const [validRePassword, setValidRePassword] = useState(false);
   const [emailMessage, setEmailMessage] = useState('');
 
-  const [isFocusedName, setIsFocusedName] = useState(false);
-  const [isFocusedLastName, setIsFocusedLastName] = useState(false);
-  const [isFocusedEmail, setIsFocusedEmail] = useState(false);
-  const [isFocusedPass, setIsFocusedPass] = useState(false);
-  const [isFocusedRePass, setIsFocusedRePass] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(true);
   const [rePasswordVisible, setRePasswordVisible] = useState(true);
 
@@ -32,6 +27,14 @@ const CreateAccount = ({navigation}) => {
     lastname: '',
     email: '',
     password: '',
+  });
+
+  const [focus, setFocus] = useState({
+    name: false,
+    lastname: false,
+    email: false,
+    password: false,
+    rePassword: false,
   })
 
   const handleValidation = () => {
@@ -53,7 +56,7 @@ const CreateAccount = ({navigation}) => {
         }
   }
 
-  const handleRegister = async () => {
+  const handleRegister = () => {
     setLoading(true);
     try {
       createUser(newUser);
@@ -69,17 +72,9 @@ const CreateAccount = ({navigation}) => {
         //       setValidEmail(true)
         //       setEmailMessage('Please enter a valid email')
         //}
-        console.log(err.code)
+        console.log(err)
     } finally {
         setLoading(false)
-    }
-  }
-
-    const onSend = async (uid) => {
-    try {
-      await setDoc(doc(database, 'users', uid), newUser);
-    } catch (error) {
-      console.log('Error saving user data', error)
     }
   }
 
@@ -99,25 +94,25 @@ const CreateAccount = ({navigation}) => {
               value={newUser.name}
               onChangeText={(val) => setNewUser({ ...newUser, name: val })}
               placeholder="Name"
-              isFocused={isFocusedName}
-              onFocus={() => setIsFocusedName(true)}
-              onBlur={() => setIsFocusedName(false)}
+              isFocused={focus.name}
+              onFocus={() => setFocus((prev)=>({ ...prev, name:true}))}
+              onBlur={() => setFocus((prev)=>({ ...prev, name:false}))}
             />
             <CustomInput
               value={newUser.lastname}
               onChangeText={(val) => setNewUser({ ...newUser, lastname: val })}
               placeholder="Lastname"
-              isFocused={isFocusedLastName}
-              onFocus={() => setIsFocusedLastName(true)}
-              onBlur={() => setIsFocusedLastName(false)}
+              isFocused={focus.lastname}
+              onFocus={() => setFocus((prev)=>({ ...prev, lastname:true}))}
+              onBlur={() => setFocus((prev)=>({ ...prev, lastname:false}))}
             />
             <CustomInput
               value={newUser.email}
               onChangeText={(val) => setNewUser({ ...newUser, email: val })}
               placeholder="Email"
-              isFocused={isFocusedEmail}
-              onFocus={() => setIsFocusedEmail(true)}
-              onBlur={() => setIsFocusedEmail(false)}
+              isFocused={focus.email}
+              onFocus={() => setFocus((prev)=>({ ...prev, email:true}))}
+              onBlur={() => setFocus((prev)=>({ ...prev, email:false}))}
               keyboardType="email-address"
               autoCapitalize="none"
               showError={validEmail}
@@ -127,9 +122,9 @@ const CreateAccount = ({navigation}) => {
               value={newUser.password}
               onChangeText={(val) => setNewUser({ ...newUser, password: val })}
               placeholder="Password"
-              isFocused={isFocusedPass}
-              onFocus={() => setIsFocusedPass(true)}
-              onBlur={() => setIsFocusedPass(false)}
+              isFocused={focus.password}
+              onFocus={() => setFocus((prev)=>({ ...prev, password:true}))}
+              onBlur={() => setFocus((prev)=>({ ...prev, password:false}))}
               secureTextEntry={passwordVisible}
               autoCapitalize="none"
               maxLength={30}
@@ -143,9 +138,9 @@ const CreateAccount = ({navigation}) => {
               value={rePassword}
               onChangeText={setRePassword}
               placeholder="Confirm your password"
-              isFocused={isFocusedRePass}
-              onFocus={() => setIsFocusedRePass(true)}
-              onBlur={() => setIsFocusedRePass(false)}
+              isFocused={focus.rePassword}
+              onFocus={() => setFocus((prev)=>({ ...prev, rePassword:true}))}
+              onBlur={() => setFocus((prev)=>({ ...prev, rePassword:false}))}
               secureTextEntry={rePasswordVisible}
               autoCapitalize="none"
               maxLength={30}

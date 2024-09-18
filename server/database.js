@@ -30,8 +30,6 @@ export async function createUser(name, lastname, email, password) {
          VALUES (?, ?, ?, ?)`, [name, lastname, email, password])
          const userId = result.insertId;
          return getUserById(userId);
-         //console.log(getUserById(userId))
-
 }
 
 //READ
