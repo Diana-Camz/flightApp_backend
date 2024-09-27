@@ -56,13 +56,19 @@ const CreateAccount = ({navigation}) => {
         }
   }
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     setLoading(true);
     try {
-      createUser(newUser);
-      Alert.alert('Account created', 'Please log in with your account', [
-        {text: 'Ok', onPress: () => navigation.navigate('Login')}
+      const response = await createUser(newUser);
+      if(response.status == "ok"){
+        Alert.alert('Account created', 'Please log in with your account', [
+          {text: 'Ok', onPress: () => navigation.navigate('Login')}
         ])
+      } else {
+        Alert.alert('Error', 'There has been an error creating your account, please try again.', [
+          {text: 'Ok', onPress: () => navigation.navigate('Login')}
+        ])
+      }
     } catch(err) {
         // if(err.code === 'auth/email-already-in-use'){
         //      setValidEmail(true)
@@ -72,7 +78,7 @@ const CreateAccount = ({navigation}) => {
         //       setValidEmail(true)
         //       setEmailMessage('Please enter a valid email')
         //}
-        console.log(err)
+        console.log('error in Create Account', err)
     } finally {
         setLoading(false)
     }
