@@ -11,7 +11,7 @@ import {useFlight} from '../../hooks/useFlight'
 import { updateFlight } from '../../api/api';
 
 const DatesUpdate = ({route, navigation}) => {
-  const {id} = route.params;
+  const {id, user_id} = route.params;
   const [isActive, setIsActive] = useState(false);
   const [selectedDate, setSelectedDate] = useState('');
   const {flight, loading, setFlight} = useFlight(id)
@@ -33,12 +33,18 @@ const DatesUpdate = ({route, navigation}) => {
   const handleEditData = async (id) => {
     try {
         //const formattedDate = selectedDate ? formatDate(parseISO(selectedDate)) : '';
-        await updateFlight(id, {date: flight.date})
-        Alert.alert('Flight updated', 'The flight has been updated successfully', [
-            {text: 'Ok', onPress: () => navigation.navigate('Home')}
+        const response = await updateFlight(id, {date: flight.date})
+        if(response.status == "ok"){
+          Alert.alert('Flight updated', 'The flight has been updated successfully', [
+            {text: 'Ok', onPress: () => navigation.navigate('Home', {user_id: user_id})}
           ])
+        } else {
+          Alert.alert('Error', 'The flight has not been updated correctly, please try again', [
+            {text: 'Try Again', onPress: () => navigation.goBack()}
+          ])
+        }
     } catch (error) {
-        console.log('Error editing date', error)
+      console.error('data cannot be updated in DatesUpdate.js', error)
     }
   }
 

@@ -8,8 +8,9 @@ import { deleteFlight } from '../../api/api';
 import {useFlight} from '../../hooks/useFlight'
 
 const Update = ({route, navigation}) => {
-    const {id} = route.params;
+    const {id, user_id} = route.params;
     const [isActive, setIsActive] = useState(true);
+    const [handleLoader, setHandleLoader] = useState(false)
     const {flight, loading} = useFlight(id)
 
 
@@ -31,18 +32,25 @@ const Update = ({route, navigation}) => {
       )
     }
     const handleDelete = async () => {
+      setHandleLoader(true)
       try {
-        deleteFlight(id)
-        Alert.alert('Flight deleted', 'The flight has been deleted successfully.', [
-          { text: 'Ok', onPress: () => navigation.navigate('Home')}
-        ])
+        const response = await deleteFlight(id)
+        if(response.status == "ok"){
+          Alert.alert('Flight deleted', 'The flight has been deleted successfully.', [
+            { text: 'Ok', onPress: () => navigation.navigate('Home', {user_id: user_id})}
+          ])
+        } else {
+          Alert.alert('Error', 'An error occurred while deleting the flight. Please try again', [
+            { text: 'Try Again', onPress: () => navigation.navigate('Home', {user_id: user_id})}
+          ])
+        }
       } catch (error) {
-        console.log(error);
-        Alert.alert('Error', 'An error occurred while deleting the flight.')
+        console.error('Error deleting flight in Update.js', error)
       }
+      setHandleLoader(false)
     }
 
-    if (loading) {
+    if (loading || handleLoader) {
       return (
         <Loader height={850}/>
       );
@@ -54,14 +62,14 @@ const Update = ({route, navigation}) => {
         <Text style={styles.title}>Edit your flight or delete it</Text>
       </View>
     <View style={styles.info_container}>
-      <UpdateItem title={'Origin'} itemInfo={flight.origin} onPress={() => navigation.navigate('OriginUpdate', {id: id})}/>
-      <UpdateItem title={'Destiny'} itemInfo={flight.destiny} onPress={() => navigation.navigate('DestinyUpdate', {id: id})}/>
-      <UpdateItem title={'Date'} itemInfo={flight.date} onPress={() => navigation.navigate('DatesUpdate', {id: id})}/>
-      <UpdateItem title={'Passengers'} itemInfo={flight.passengers} onPress={() => navigation.navigate('PassengersUpdate', {id: id})}/>
+      <UpdateItem title={'Origin'} itemInfo={flight.origin} onPress={() => navigation.navigate('OriginUpdate', {id: id, user_id: user_id})}/>
+      <UpdateItem title={'Destiny'} itemInfo={flight.destiny} onPress={() => navigation.navigate('DestinyUpdate', {id: id, user_id: user_id})}/>
+      <UpdateItem title={'Date'} itemInfo={flight.date} onPress={() => navigation.navigate('DatesUpdate', {id: id, user_id: user_id})}/>
+      <UpdateItem title={'Passengers'} itemInfo={flight.passengers} onPress={() => navigation.navigate('PassengersUpdate', {id: id, user_id: user_id})}/>
     </View>
       <View style={styles.button_container}>
         <ButtonNext title={'Delete Flight'}  onPress={confirmDelete} isActive={isActive}/>
-        <Button title={'Cancel'}  onPress={() => navigation.navigate('Home')}/>
+        <Button title={'Cancel'}  onPress={() => navigation.navigate('Home', {user_id: user_id})}/>
       </View>
     </View>
   )

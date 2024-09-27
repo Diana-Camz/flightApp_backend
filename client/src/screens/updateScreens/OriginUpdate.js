@@ -10,18 +10,24 @@ import { useFlight } from '../../hooks/useFlight'
 import { updateFlight } from '../../api/api';
 
 const OriginUpdate = ({route, navigation}) => {
-  const {id} = route.params;
+  const {id, user_id} = route.params;
   const {flight, loading, setFlight} = useFlight(id)
 
 
   const handleEditData = async (id) => {
     try {
-      await updateFlight(id, {origin: flight.origin})
-      Alert.alert('Flight updated', 'The flight has been updated successfully', [
-        {text: 'Ok', onPress: () => navigation.navigate('Home')}
-      ])
+      const response = await updateFlight(id, {origin: flight.origin})
+      if(response.status == "ok"){
+        Alert.alert('Flight updated', 'The flight has been updated successfully', [
+          {text: 'Ok', onPress: () => navigation.navigate('Home', {user_id: user_id})}
+        ])
+      } else {
+        Alert.alert('Error', 'The flight has not been updated correctly, please try again', [
+          {text: 'Try Again', onPress: () => navigation.goBack()}
+        ])
+      }
     } catch (error) {
-      console.log('data cannot be updated', error)
+      console.error('data cannot be updated in OriginUpdate.js', error)
     }
   }
 
