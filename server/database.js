@@ -51,6 +51,12 @@ export async function getUserById(id) {
     //console.log(row[0]);
 }
 
+export async function getUserByEmail(email) {
+    const [result] = await pool.query(`SELECT * FROM users WHERE email = ?`, [email])
+    return result;
+    //console.log(row[0]);
+}
+
 //UPDATE
 export async function updateFlight(id, value) {
      const field = Object.keys(value)[0];
