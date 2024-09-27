@@ -10,23 +10,30 @@ const Confirm = ({route, navigation}) => {
 
   const [loading, setLoading] = useState(false)
   const [isActive, setIsActive] = useState(true);
-  const {origin, destiny, day, passengers} = route.params;
+  const {origin, destiny, day, passengers, user_id} = route.params;
   const [newFlight, setNewFlight] = useState({
     origin: origin,
     destiny: destiny,
     date: day,
     passengers: passengers,
-    user_id: 2,
+    user_id: user_id,
     createdAt: new Date(),
   })
 
   const onSendData = async () => {
     setLoading(true)
     try {
-      saveFlight(newFlight);
-      Alert.alert('Saved flight', 'Your flight has been booked correctly', [
-       {text: 'Ok', onPress: () => navigation.navigate('Home')}
-      ])
+      const response = await saveFlight(newFlight);
+      if(response.status == "ok"){
+        Alert.alert('Saved flight', 'Your flight has been booked correctly', [
+          {text: 'Ok', onPress: () => navigation.navigate('Home', {user_id: user_id})}
+        ])
+      } else {
+        Alert.alert('Error', 'There has been an error with your flight reservation, please try again.', [
+          {text: 'Try Again', onPress: () => navigation.navigate('Home', {user_id: user_id})}
+        ])
+      }
+
     } catch (error) {
       console.log(error, 'error sending new flight')
     }
@@ -34,7 +41,7 @@ const Confirm = ({route, navigation}) => {
   }
 
   const cancelRequest = () => {
-    navigation.navigate('Home')
+    navigation.navigate('Home', {user_id: user_id})
   }
 
   if(loading) {

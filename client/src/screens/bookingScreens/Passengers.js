@@ -7,7 +7,7 @@ import FlightInfo from '../../components/booking/FlightInfo';
 const Passengers = ({route, navigation}) => {
   const [passengers, setPassengers] = useState(1);
   const [isActive, setIsActive] = useState(true);
-  const {origin, destiny, day} = route.params;
+  const {user_id, origin, destiny, day} = route.params;
 
   const addPassengers = () => {
     setPassengers(passengers + 1)
@@ -22,7 +22,7 @@ const Passengers = ({route, navigation}) => {
   }
 
   const handleSendData = () => {
-    navigation.navigate('Confirm', {origin: origin, destiny: destiny, day: day, passengers: passengers})
+    navigation.navigate('Confirm', {user_id: user_id, origin: origin, destiny: destiny, day: day, passengers: passengers})
   }
   return (
     <View style={styles.container}>

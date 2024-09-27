@@ -6,7 +6,8 @@ import data from '../../airports_data/airports.data'
 import ButtonNext from '../../components/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
 
-const Origin = ({navigation}) => {
+const Origin = ({navigation, route}) => {
+  const {user_id} = route.params;
   const [origin, setOrigin] = useState('')
   const [isActive, setIsActive] = useState(false)
 
@@ -18,7 +19,7 @@ const Origin = ({navigation}) => {
     }}, [origin])
 
   const handleSendData = () => {
-    navigation.navigate('Destiny', {origin: origin})
+    navigation.navigate('Destiny', {user_id: user_id, origin: origin})
   }
   return (
     <View style={styles.container}>

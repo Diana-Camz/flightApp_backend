@@ -9,7 +9,7 @@ import FlightInfo from '../../components/booking/FlightInfo';
 const Destiny = ({route, navigation}) => {
   const [destiny, setDestiny] = useState('')
   const [isActive, setIsActive] = useState(false)
-  const {origin} = route.params;
+  const {user_id, origin} = route.params;
 
   useEffect(() =>{
     if(destiny.length >= 1){
@@ -19,7 +19,7 @@ const Destiny = ({route, navigation}) => {
     }}, [destiny])
 
   const handleSendData = () => {
-    navigation.navigate('Dates', {origin: origin, destiny: destiny})
+    navigation.navigate('Dates', {user_id: user_id, origin: origin, destiny: destiny})
   }
   return (
     <View style={styles.container}>

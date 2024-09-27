@@ -10,7 +10,7 @@ const Dates = ({route, navigation}) => {
   const [isActive, setIsActive] = useState(false);
   const [selectedDate, setSelectedDay] = useState('');
   const currentDay = new Date().toISOString().split('T')[0];
-  const {origin, destiny} = route.params;
+  const {user_id, origin, destiny} = route.params;
 
   const onDayPress = (day) => {
     setSelectedDay(day.dateString)
@@ -23,7 +23,7 @@ const Dates = ({route, navigation}) => {
   const formattedDate = selectedDate ? formatDate(parseISO(selectedDate)) : '';
 
   const handleSendData = () => {
-    navigation.navigate('Passengers', {origin: origin, destiny: destiny, day: formattedDate})
+    navigation.navigate('Passengers', {user_id: user_id, origin: origin, destiny: destiny, day: formattedDate})
   }
 
   return (
