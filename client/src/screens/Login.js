@@ -4,46 +4,52 @@ import ButtonNext from '../components/ButtonNext.js';
 import Loader from '../components/Loader.js';
 import CustomInput from '../components/login/CustomInput.js';
 import Button from '../components/Button.js';
+import { loginUser } from '../api/api.js';
 
 const Login = ({navigation}) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false)
 
+  const [loading, setLoading] = useState(false)
+  const [userData, setUserData] = useState({
+    email: '',
+    password: ''
+  })
   const [validEntries, setValidEntries] = useState(false);
   const [validEmail, setValidEmail] = useState(false);
   const [validPassword, setValidPassword] = useState(false);
   const [emailMessage, setEmailMessage] = useState('');
   const [passwordMessage, setPasswordMessage] = useState('');
 
-  const [isFocusedEmail, setIsFocusedEmail] = useState(false);
-  const [isFocusedPassword, setIsFocusedPassword] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(true);
+  const [focus, setFocus] = useState({
+    email: false,
+    password: false,
+  })
 
   const handleLogin = () => {
-      if(email && password){
+      if(userData.email && userData.password){
         setValidEntries(false)
-        signin()
+        signIn()
         }else {
           setValidEntries(true)
         }
   }
 
-  const signin = async () => {
-    setLoading(true);
+  const signIn = async () => {
+   setLoading(true);
     try {
-      const response = '';
-      //console.log(response)
-      navigation.navigate('Home')
+      const response = await loginUser(userData)
+      if(response.status == "ok"){
+         navigation.navigate('Home', {user_id: response.user[0].id})
+      }
     } catch (err) {
-      if(err.code === 'auth/invalid-credential'){
-        setValidPassword(true)
-        setPasswordMessage('Your email or password are incorrect')
-      }
-      if(err.code === 'auth/invalid-email'){
-        setValidEmail(true)
-        setEmailMessage('Please enter a valid email')
-      }
+      // if(err.code === 'auth/invalid-credential'){
+      //   setValidPassword(true)
+      //   setPasswordMessage('Your email or password are incorrect')
+      // }
+      // if(err.code === 'auth/invalid-email'){
+      //   setValidEmail(true)
+      //   setEmailMessage('Please enter a valid email')
+      // }
       console.log(err)
     } finally {
       setLoading(false)
@@ -63,24 +69,24 @@ const Login = ({navigation}) => {
         <Text style={styles.subtitle}>Please Sign in or Create an Account</Text>
         <View style={styles.inputs_container}>
           <CustomInput
-            value={email}
-            onChangeText={(val) => setEmail(val)}
+            value={userData.email}
+            onChangeText={(val) => setUserData({ ...userData, email: val })}
             placeholder="Email"
-            isFocused={isFocusedEmail}
-            onFocus={() => setIsFocusedEmail(true)}
-            onBlur={() => setIsFocusedEmail(false)}
+            isFocused={focus.email}
+            onFocus={() => setFocus((prev) => ({ ...prev, email:true}))}
+            onBlur={() => setFocus((prev) => ({...prev, email:false}))}
             keyboardType="email-address"
             autoCapitalize="none"
             showError={validEmail}
             errorMessage={emailMessage}
           />
           <CustomInput
-            value={password}
-            onChangeText={setPassword}
+            value={userData.password}
+            onChangeText={(val) => setUserData({...userData, password: val})}
             placeholder="Password"
-            isFocused={isFocusedPassword}
-            onFocus={() => setIsFocusedPassword(true)}
-            onBlur={() => setIsFocusedPassword(false)}
+            isFocused={focus.password}
+            onFocus={() => setFocus((prev) => ({ ...prev, password:true}))}
+            onBlur={() => setFocus((prev) => ({ ...prev, password:false}))}
             secureTextEntry={passwordVisible}
             autoCapitalize="none"
             maxLength={30}

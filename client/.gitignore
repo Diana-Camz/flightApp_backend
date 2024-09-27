@@ -41,4 +41,4 @@ npm i date-fns
 npm install --save react-native-calendars
 --npm i ionicons // checar comando
 --stack navigator
---back, nodemon express cors 
+--back, dotenv nodemon express cors bcryptjs jwt 
