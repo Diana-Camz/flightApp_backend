@@ -8,7 +8,6 @@ import {
     createUser,
     getFlightById,
     getFlightByUserId,
-    getUserById,
     updateFlight,
     deleteFlight,
     getUserByEmail
@@ -37,7 +36,7 @@ app.post('/flights/:id', async (req, res) => {
         const flight = await createFlight(origin, destiny, date, passengers, user_id);
         res.status(200).send({status: "ok", flight});
     } catch (error) {
-        res.status(500).json({ message: 'Internal server error in app.js' });
+        res.status(500).json({ message: 'Internal server error on flights/id in app.js' });
     }
 });
 
@@ -48,7 +47,7 @@ app.post('/user', async (req, res) => {
         const user = await createUser(name, lastname, email, hash);
         res.status(201).send({status: "ok", user});
     } catch (error) {
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ message: 'Internal server error on user in app.js' });
     }
 })
 
@@ -59,9 +58,14 @@ app.post('/login', async (req, res) => {
         if(userExist.length > 0){
             const correctPassword = bcrypt.compareSync(password, userExist[0].password);
             if(correctPassword){
-                const token = jwt.sign({email: userExist[0].email}, jwt_secret)
+                const token = jwt.sign({
+                    email: userExist[0].email, 
+                    name: userExist[0].name,
+                    lastname: userExist[0].lastname,
+                    id: userExist[0].id,
+                }, jwt_secret)
                 if(res.status(201)){
-                    return res.send({status: 'ok', data: token, user: userExist});
+                    return res.send({status: 'ok', data: token});
                 }
             } else {
                 res.send('Invalid password')
@@ -71,6 +75,16 @@ app.post('/login', async (req, res) => {
         }
     } catch (error) {
         res.status(500).send('Error login in app.js')
+    }
+})
+
+app.post('/userdata', async (req, res) => {
+    const {token} = req.body
+    try {
+        const user = jwt.verify(token, jwt_secret)
+        res.status(201).send({user: user})
+    } catch (error) {
+        res.status(500).send('Error loginuser in app.js')
     }
 })
 
@@ -85,10 +99,6 @@ app.get('/flight/:id', async (req, res) => {
     res.status(201).send(flight);
 });
 
-app.get('/user/:id', async (req, res) => {
-    const user = await getUserById(req.params.id);
-    res.status(200).send(user);
-});
 
 
 // UPDATE
