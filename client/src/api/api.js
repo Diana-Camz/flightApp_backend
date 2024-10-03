@@ -4,6 +4,7 @@ const API_FLIGHTS = `${BASE_URL}/flights`;
 const API_FLIGHT = `${BASE_URL}/flight`;
 const API_USER = `${BASE_URL}/user`
 const API_LOGIN = `${BASE_URL}/login`
+const API_USER_DATA = `${BASE_URL}/userdata`
 
 // GET
 export const getFlights = async (user_id) => {
@@ -13,11 +14,6 @@ export const getFlights = async (user_id) => {
 
 export const getFlight = async (id) => {
     const res = await fetch(`${API_FLIGHT}/${id}`)
-    return await res.json()
-}
-
-export const getUserById = async (user_id) => {
-    const res = await fetch(`${API_USER}/${user_id}`)
     return await res.json()
 }
 
@@ -58,7 +54,20 @@ export const loginUser = async (userData) => {
         });
         return await res.json()
     } catch (error) {
-        console.error('Error login in api.js', error)
+        console.error('Error login on loginUser in api.js', error)
+    }
+}
+
+export const userData = async (token) => {
+    try {
+        const res = await fetch(API_USER_DATA, {
+            method: 'POST',
+            headers: {Accept: 'application/json', 'Content-Type': 'application/json'},
+            body: JSON.stringify(token) 
+        });
+        return await res.json()
+    } catch (error) {
+        console.error('Error login on userData in api.js', error)
     }
 }
 

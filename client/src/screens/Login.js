@@ -1,5 +1,6 @@
 import { StyleSheet, View, Text, TextInput } from 'react-native'
 import React,{useState} from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import ButtonNext from '../components/ButtonNext.js';
 import Loader from '../components/Loader.js';
 import CustomInput from '../components/login/CustomInput.js';
@@ -39,7 +40,8 @@ const Login = ({navigation}) => {
     try {
       const response = await loginUser(userData)
       if(response.status == "ok"){
-         navigation.navigate('Home', {user_id: response.user[0].id})
+         navigation.navigate('Home')
+         AsyncStorage.setItem("token", response.data)
       }
     } catch (err) {
       // if(err.code === 'auth/invalid-credential'){
@@ -50,7 +52,7 @@ const Login = ({navigation}) => {
       //   setValidEmail(true)
       //   setEmailMessage('Please enter a valid email')
       // }
-      console.log(err)
+      console.error(err)
     } finally {
       setLoading(false)
     }

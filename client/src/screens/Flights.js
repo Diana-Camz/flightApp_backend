@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Loader from '../components/Loader'
@@ -7,13 +6,11 @@ import { useFlights } from '../hooks/useFlights';
 import { useUser } from '../hooks/useUser';
 
 
-export default function Flights({navigation, route}) {
-  const {user_id} = route.params;
-  const {user, loadingUser} = useUser(user_id)
-  const {flights, loading} = useFlights(user_id)
+export default function Flights({navigation}) {
+  const {user, loadingUser} = useUser()
+  const {flights, loading} = useFlights(user.id)
 
-
-  if (loading || loadingUser) {
+  if (loadingUser || loading) {
     return (
       <Loader height={850}/>
     );
@@ -25,7 +22,7 @@ export default function Flights({navigation, route}) {
         <Text style={styles.title}>My Flights</Text>
         <View style={styles.name_container}>
           <Text style={styles.name_user}>{user.name} {user.lastname}</Text>
-          {/* <Pressable onPress={signOutWithFirebase}> */}
+          {/* <Pressable onPress={}> */}
           <Pressable>
             <Text style={styles.logout}>log out</Text>
           </Pressable>

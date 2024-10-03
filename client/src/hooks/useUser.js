@@ -1,22 +1,31 @@
 import { useState, useEffect } from 'react';
-import { getUserById } from '../api/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { userData } from '../api/api';
 
-export const useUser = (user_id) => {
-    const [user, setUser] = useState(null)
+export const useUser = () => {
     const [loadingUser, setLoadingUser] = useState(true)
+    const [user, setUser] = useState({})
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const [data] = await getUserById(user_id);
-                setUser(data)
-            } catch (error) {
-                console.log('Error fetching user data', error)
-            } finally {
-                setLoadingUser(false)
+    const getUserData = async () => {
+        const tokenItem = await AsyncStorage.getItem('token')
+        try {
+            if(tokenItem){
+                const data = await userData({token: tokenItem});
+                const user = data.user
+                setUser(user)
+            }else{
+                console.error('token not found')
             }
-        };
-        fetchUser()
-    }, [])
+        } catch (error) {
+            console.error('Error fetching user data', error)
+        } finally {
+            setLoadingUser(false)
+        }
+    };
+
+    useEffect( () => {
+        getUserData()
+    }, [user.id]);
+
     return {user, loadingUser}
 }

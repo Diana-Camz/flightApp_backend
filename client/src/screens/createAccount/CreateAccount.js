@@ -8,9 +8,6 @@ import {createUser} from '../../api/api'
 
 const CreateAccount = ({navigation}) => {
   const [loading, setLoading] = useState(false)
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
 
   const [validEntries, setValidEntries] = useState(false);
