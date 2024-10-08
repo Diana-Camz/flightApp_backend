@@ -25,7 +25,7 @@ export const useUser = () => {
 
     useEffect( () => {
         getUserData()
-    }, [user.id]);
+    }, []);
 
     return {user, loadingUser}
 }

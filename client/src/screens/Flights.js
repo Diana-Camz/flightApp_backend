@@ -4,11 +4,18 @@ import Loader from '../components/Loader'
 import FlightCard from '../components/FlightCard';
 import { useFlights } from '../hooks/useFlights';
 import { useUser } from '../hooks/useUser';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function Flights({navigation}) {
   const {user, loadingUser} = useUser()
   const {flights, loading} = useFlights(user.id)
+
+  const signOut = async () => {
+    await AsyncStorage.removeItem('islogged')
+    await AsyncStorage.removeItem('token')
+    navigation.navigate('Login')
+  }
 
   if (loadingUser || loading) {
     return (
@@ -22,9 +29,8 @@ export default function Flights({navigation}) {
         <Text style={styles.title}>My Flights</Text>
         <View style={styles.name_container}>
           <Text style={styles.name_user}>{user.name} {user.lastname}</Text>
-          {/* <Pressable onPress={}> */}
-          <Pressable>
-            <Text style={styles.logout}>log out</Text>
+          <Pressable onPress={signOut}>
+            <Text style={styles.logout}>Sign out</Text>
           </Pressable>
         </View>
       </View>

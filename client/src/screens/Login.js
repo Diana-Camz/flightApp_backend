@@ -40,8 +40,10 @@ const Login = ({navigation}) => {
     try {
       const response = await loginUser(userData)
       if(response.status == "ok"){
-         navigation.navigate('Home')
-         AsyncStorage.setItem("token", response.data)
+        await AsyncStorage.setItem("token", response.data)
+        await AsyncStorage.setItem("islogged", JSON.stringify(true))
+        setUserData({email: '',password: ''})
+        navigation.navigate('Home')
       }
     } catch (err) {
       // if(err.code === 'auth/invalid-credential'){

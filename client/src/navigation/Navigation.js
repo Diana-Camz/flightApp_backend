@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { createStackNavigator } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Flights from '../screens/Flights'
 import Origin from '../screens/bookingScreens/Origin'
 import Destiny from '../screens/bookingScreens/Destiny'
@@ -18,8 +19,18 @@ import CreateAccount from '../screens/createAccount/CreateAccount';
 
 const Navigation = () => {
   const Stack = createStackNavigator();
+  const [isLoggedIn, setIsLoggedIn] = useState('false')
+
+  const getLoggedData = async () => {
+    const logged = await AsyncStorage.getItem('islogged')
+    setIsLoggedIn(logged)
+  }
+
+  useEffect(() => {
+    getLoggedData()
+  }, [])
   return (
-    <Stack.Navigator initialRouteName='Login' screenOptions={{headerShown:false}}>
+    <Stack.Navigator initialRouteName={isLoggedIn == 'true' ? 'Home' : 'Login'} screenOptions={{headerShown:false}}>
       <Stack.Screen name="Home" component={Flights}/>
 
       <Stack.Screen name="Login" component={Login}/>
