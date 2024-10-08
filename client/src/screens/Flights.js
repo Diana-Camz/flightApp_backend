@@ -1,10 +1,11 @@
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { BackHandler, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Loader from '../components/Loader'
 import FlightCard from '../components/FlightCard';
 import { useFlights } from '../hooks/useFlights';
 import { useUser } from '../hooks/useUser';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect } from 'react';
 
 
 export default function Flights({navigation}) {
@@ -16,6 +17,17 @@ export default function Flights({navigation}) {
     await AsyncStorage.removeItem('token')
     navigation.navigate('Login')
   }
+
+  useEffect(() => {
+    const backAction = () => {
+      return true;
+    }
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => backHandler.remove()
+  }, [])
 
   if (loadingUser || loading) {
     return (
