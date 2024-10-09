@@ -5,12 +5,12 @@ import FlightCard from '../components/FlightCard';
 import { useFlights } from '../hooks/useFlights';
 import { useUser } from '../hooks/useUser';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 
 export default function Flights({navigation}) {
   const {user, loadingUser} = useUser()
-  const {flights, loading} = useFlights(user.id)
+  const {flights, loading, setLoading, getFlightsData} = useFlights(user.id)
 
   const signOut = async () => {
     await AsyncStorage.removeItem('islogged')
@@ -26,8 +26,23 @@ export default function Flights({navigation}) {
       "hardwareBackPress",
       backAction
     );
-    return () => backHandler.remove()
-  }, [])
+
+    const refreshFlightsData = navigation.addListener('focus', async () => {
+      setLoading(true)
+      try {
+          await getFlightsData()
+      } catch (error) {
+          console.log('Error fetching flights data', error)
+      } finally {
+          setLoading(false)
+      }
+    })
+    return () => {
+      backHandler.remove();
+      refreshFlightsData();
+    }
+    
+  }, [flights])
 
   if (loadingUser || loading) {
     return (
@@ -52,11 +67,11 @@ export default function Flights({navigation}) {
         data={flights}
         keyExtractor={item => item.id}
         renderItem={({item}) => 
-          <Pressable onPress={() => navigation.navigate('Update', {id: item.id, user_id: user_id})}>
+          <Pressable onPress={() => navigation.navigate('Update', {id: item.id, user_id: user.id})}>
             <FlightCard {... item}/>
           </Pressable>}
       /> }
-      <Ionicons name={'add-circle'} size={90} style={styles.iconAdd} onPress={()=>{navigation.navigate('Origin', {user_id: user_id})}}/>
+      <Ionicons name={'add-circle'} size={90} style={styles.iconAdd} onPress={()=>{navigation.navigate('Origin', {user_id: user.id})}}/>
     </View>
   );
 }

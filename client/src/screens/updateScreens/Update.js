@@ -37,11 +37,11 @@ const Update = ({route, navigation}) => {
         const response = await deleteFlight(id)
         if(response.status == "ok"){
           Alert.alert('Flight deleted', 'The flight has been deleted successfully.', [
-            { text: 'Ok', onPress: () => navigation.navigate('Home', {user_id: user_id})}
+            { text: 'Ok', onPress: () => navigation.navigate('Home')}
           ])
         } else {
           Alert.alert('Error', 'An error occurred while deleting the flight. Please try again', [
-            { text: 'Try Again', onPress: () => navigation.navigate('Home', {user_id: user_id})}
+            { text: 'Try Again', onPress: () => navigation.navigate('Home')}
           ])
         }
       } catch (error) {
