@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
         paddingLeft: 11,
         color: '#CD3939',
         marginBottom: 5,
+       // borderWidth: 1,
       },
       isActive: {
         borderWidth: 2,

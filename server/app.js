@@ -34,7 +34,7 @@ app.post('/flights/:id', async (req, res) => {
     try {
         const {origin, destiny, date, passengers, user_id} = req.body;
         const flight = await createFlight(origin, destiny, date, passengers, user_id);
-        res.status(200).send({status: "ok", flight});
+        res.status(201).send({status: "ok", flight});
     } catch (error) {
         res.status(500).json({ message: 'Internal server error on flights/id in app.js' });
     }
@@ -64,17 +64,18 @@ app.post('/login', async (req, res) => {
                     lastname: userExist[0].lastname,
                     id: userExist[0].id,
                 }, jwt_secret)
-                if(res.status(201)){
+                if(res.status(200)){
                     return res.send({status: 'ok', data: token});
                 }
             } else {
-                res.send('Invalid password')
+                res.status(401).send({status:'error', message:'Invalid password'})
             }
         } else {
-            res.send('Invalid email')
+            res.status(401).send({status:'error', message:'Invalid email'})
         }
     } catch (error) {
-        res.status(500).send('Error login in app.js')
+        console.error('Error in /login route:', error);
+        res.status(500).send({ status: 'error', message: 'Internal server error' })
     }
 })
 
@@ -82,21 +83,21 @@ app.post('/userdata', async (req, res) => {
     const {token} = req.body
     try {
         const user = jwt.verify(token, jwt_secret)
-        res.status(201).send({user: user})
+        res.status(200).send({user: user})
     } catch (error) {
-        res.status(500).send('Error loginuser in app.js')
+        res.status(500).send({message: 'Error loginuser in app.js'})
     }
 })
 
 // READ
 app.get('/flights/:id', async (req, res) => {
     const flights = await getFlightByUserId(req.params.id);
-    res.status(201).send(flights);
+    res.status(200).send(flights);
 });
 
 app.get('/flight/:id', async (req, res) => {
     const flight = await getFlightById(req.params.id);
-    res.status(201).send(flight);
+    res.status(200).send(flight);
 });
 
 
@@ -105,13 +106,13 @@ app.get('/flight/:id', async (req, res) => {
 app.put('/flight/:id', async (req, res) => {
     const value = req.body;
     const flight = updateFlight(req.params.id, value);
-    res.status(200).send({status: "ok", flight});
+    res.status(202).send({status: "ok", flight});
 });
 
 // DELETE
 app.delete('/flight/:id', async (req, res) => {
     await deleteFlight(req.params.id);
-    res.status(200).send({status: "ok"});
+    res.status(202).send({status: "ok"});
 })
 
 app.listen(port || 3000, () => {

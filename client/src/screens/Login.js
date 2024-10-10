@@ -39,22 +39,22 @@ const Login = ({navigation}) => {
    setLoading(true);
     try {
       const response = await loginUser(userData)
-      if(response.status == "ok"){
+      if(response.status == "error"){
+        if(response.message == 'Invalid email'){
+          setValidEmail(true)
+          setEmailMessage(response.message)
+        } else if(response.message == 'Invalid password') {
+          setValidPassword(true)
+          setPasswordMessage(response.message)
+        }
+      }else {
         await AsyncStorage.setItem("token", response.data)
         await AsyncStorage.setItem("islogged", JSON.stringify(true))
         setUserData({email: '',password: ''})
         navigation.navigate('Home')
       }
     } catch (err) {
-      // if(err.code === 'auth/invalid-credential'){
-      //   setValidPassword(true)
-      //   setPasswordMessage('Your email or password are incorrect')
-      // }
-      // if(err.code === 'auth/invalid-email'){
-      //   setValidEmail(true)
-      //   setEmailMessage('Please enter a valid email')
-      // }
-      console.error(err)
+      console.log(err)
     } finally {
       setLoading(false)
     }
@@ -100,7 +100,7 @@ const Login = ({navigation}) => {
             showError={validPassword}
             errorMessage={passwordMessage}
           />
-        {validEntries ? <Text style={styles.errorEntriesTxt}>Please enter your email and password</Text> : <Text style={styles.errorTxt}/>}
+        <Text style={styles.errorEntriesTxt}>{validEntries ? 'Please enter a valid email and password' : ''}</Text>
     </View>
         <ButtonNext title={'Sign In'} onPress={handleLogin} isActive={true}/>
         <Button title={'Create an Account'} onPress={() => navigation.navigate('CreateAccount')} isActive={true}/>
@@ -149,19 +149,13 @@ const styles = StyleSheet.create({
     borderColor: '#DBDADA',
     borderRadius: 8,
   },
-  errorTxt: {
-    fontSize: 10,
-    width: '100%',    
-    paddingLeft: 11,
-    color: '#CD3939',
-    marginBottom: 5,
-  },
   errorEntriesTxt: {
     fontSize: 12,
     textAlign: 'center',
     marginLeft: 10,
     color: '#CD3939',
     marginTop: 8,
+    marginBottom: 5,
   },
   isActiveEmail: {
     borderWidth: 2,

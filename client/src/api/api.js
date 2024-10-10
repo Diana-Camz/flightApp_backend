@@ -52,9 +52,14 @@ export const loginUser = async (userData) => {
             headers: {Accept: 'application/json', 'Content-Type': 'application/json'},
             body: JSON.stringify(userData) 
         });
+        if(!res.ok){
+            const errorData = await res.json();
+            return {status: 'error', message: errorData.message || 'Login Failed'};
+        }
         return await res.json()
     } catch (error) {
         console.error('Error login on loginUser in api.js', error)
+        return { status: 'error', message: 'An error occurred. Please try again.' };
     }
 }
 
