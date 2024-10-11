@@ -39,9 +39,14 @@ export const createUser = async (newUser) => {
             headers: {Accept: 'application/json', 'Content-Type': 'application/json'},
             body: JSON.stringify(newUser) 
         });
+        if(!res.ok){
+            const errorData = await res.json();
+            return {status: 'error', message: errorData.message || 'Failed operation'};
+        }
         return res.json()
     } catch (error) {
-        console.error('Error creating user in api.js', error);
+        console.error('Error login on createUser in api.js', error)
+        return { status: 'error', message: 'An error occurred. Please try again.' };
     }
 }
 

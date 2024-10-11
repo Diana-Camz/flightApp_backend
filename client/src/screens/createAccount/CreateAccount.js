@@ -57,24 +57,20 @@ const CreateAccount = ({navigation}) => {
     setLoading(true);
     try {
       const response = await createUser(newUser);
-      if(response.status == "ok"){
-        Alert.alert('Account created', 'Please log in with your account', [
-          {text: 'Ok', onPress: () => navigation.navigate('Login')}
-        ])
+      if(response.status == "error"){
+        if(response.message == 'Email already in use'){
+          setValidEmail(true)
+          setEmailMessage(response.message)
+        }
       } else {
-        Alert.alert('Error', 'There has been an error creating your account, please try again.', [
+        Alert.alert('Account created', 'Please log in with your account', [
           {text: 'Ok', onPress: () => navigation.navigate('Login')}
         ])
       }
     } catch(err) {
-        // if(err.code === 'auth/email-already-in-use'){
-        //      setValidEmail(true)
-        //       setEmailMessage('Email already in use')
-        //     }
-        //     if(err.code === 'auth/invalid-email'){
-        //       setValidEmail(true)
-        //       setEmailMessage('Please enter a valid email')
-        //}
+      Alert.alert('Error', 'There has been an error creating your account, please try again.', [
+        {text: 'Ok', onPress: () => navigation.navigate('Login')}
+      ])
         console.log('error in Create Account', err)
     } finally {
         setLoading(false)

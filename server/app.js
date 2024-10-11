@@ -43,11 +43,17 @@ app.post('/flights/:id', async (req, res) => {
 app.post('/user', async (req, res) => {
     try {
         const {name, lastname, email, password} = req.body;
-        var hash = bcrypt.hashSync(password, salt);
-        const user = await createUser(name, lastname, email, hash);
-        res.status(201).send({status: "ok", user});
+        const userExist = await getUserByEmail(email);
+        if(!userExist.length > 0) {
+            var hash = bcrypt.hashSync(password, salt);
+            const user = await createUser(name, lastname, email, hash);
+            res.status(201).send({status: "ok", user});
+        } else {
+            res.status(401).send({status:'error', message:'Email already in use'})
+        }
     } catch (error) {
-        res.status(500).json({ message: 'Internal server error on user in app.js' });
+        console.error('Error in /user route:', error);
+        res.status(500).send({ status: 'error', message: 'Internal server error' })
     }
 })
 
