@@ -40,10 +40,10 @@ Clone .env.template file to .env and add your environment variables
 
 ## Screenshots
 
-<img src='./src/screenshots/login1.jpg' width="80" height="300" margin="3">
-<img src='./src/screenshots/createAccount.png' width="1120" height="600">
-<img src='./src/screenshots/Home.png' width="560" height="600">
-<img src='./src/screenshots/createFlightProcess1.png' width="1120" height="600">
-<img src='./src/screenshots/createFlightProcess2.png' width="840" height="600">
-<img src='./src/screenshots/updateFlight.png' width="840" height="600">
-<img src='./src/screenshots/deleteFlight.png' width="840" height="600">
+<img src='./client/src/screenshots/login1.jpg' width="80" height="300" margin="3">
+<img src='./client/src/screenshots/createAccount.png' width="1120" height="600">
+<img src='./client/src/screenshots/Home.png' width="560" height="600">
+<img src='./client/src/screenshots/createFlightProcess1.png' width="1120" height="600">
+<img src='./client/src/screenshots/createFlightProcess2.png' width="840" height="600">
+<img src='./client/src/screenshots/updateFlight.png' width="840" height="600">
+<img src='./client/src/screenshots/deleteFlight.png' width="840" height="600">
