@@ -40,7 +40,7 @@ Clone .env.template file to .env and add your environment variables
 
 ## Screenshots
 
-<img src='./src/screenshots/login1.jpg' width="280" height="550" margin="3">
+<img src='./src/screenshots/login1.jpg' width="80" height="300" margin="3">
 <img src='./src/screenshots/createAccount.png' width="1120" height="600">
 <img src='./src/screenshots/Home.png' width="560" height="600">
 <img src='./src/screenshots/createFlightProcess1.png' width="1120" height="600">
