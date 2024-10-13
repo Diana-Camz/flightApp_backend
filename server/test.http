@@ -1,0 +1,41 @@
+@api = http://localhost:8082
+
+
+###
+GET {{api}}/flight/2
+###
+GET {{api}}/user/7
+###
+POST {{api}}/user
+Accept: application/json
+Content-Type: application/json
+
+{
+    "name": "Luisa",
+    "lastname": "Campos",
+    "email": "py@correo.com",
+    "password": "vvvvvv"
+}
+
+###
+POST {{api}}/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "ale@correo.com",
+    "password": "vvvvvv"
+}
+
+###
+POST {{api}}/flights/21
+Accept: application/json
+Content-Type: application/json
+
+{
+    "origin": "Houston - IAH",
+    "destiny": "Ibiza - IBZ",
+    "date": "December 30, 2024",
+    "passengers": 1,
+    "user_id": 21
+}
