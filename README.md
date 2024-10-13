@@ -1,7 +1,7 @@
 # Flight App Backend
 # Getting Started
 
-mobile application is built with a MySQL database and allows users to create flights by selecting the origin and destination from a local database, specifying the date, and indicating the number of passengers.
+This mobile application is built with a MySQL database and allows users to create flights by selecting the origin and destination from a local database, specifying the date, and indicating the number of passengers.
 
 The app also supports user account creation, enabling individuals to log in and maintain a personalized list of flights associated with their account. This ensures that each user has access to their own unique flight history and bookings.
 
@@ -23,6 +23,7 @@ Run the backend server with
 And run the frontend application with
 ```bash
   npx expo start
+```
 
 ## Configure environment variables
 Clone .env.template file to .env and add your environment variables
